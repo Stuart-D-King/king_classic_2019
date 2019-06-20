@@ -14,6 +14,7 @@ import boto3
 def past_locations_map():
     m = folium.Map(location=[40, -98], zoom_start=5)
 
+    folium.Marker([33.494911, -111.926064], popup='2018 - Scottsdale, AZ - Alex King').add_to(m)
     folium.Marker([36.805531, -114.06719], popup='2017 - Mesquite, NV - Alex King').add_to(m)
     folium.Marker([41.878114, -87.629798], popup='2016 - Chicago, IL - Jerry King').add_to(m)
     folium.Marker([34.502587, -84.951054], popup='2015 - Georgia - Stuart King').add_to(m)
@@ -141,12 +142,20 @@ class Player(object):
 class PlayGolf(object):
 
     def __init__(self):
-        self.courses = {"Talking Stick - O'odham" : ([4,5,4,4,4,3,4,3,4,4,3,4,4,4,4,3,5,4],[15,13,1,3,11,5,9,17,7,12,6,2,16,8,14,18,4,10]),
-        'Talking Stick - Piipaash' : ([4,4,3,4,4,4,5,4,3,4,4,4,3,5,4,5,3,4], [13,3,7,17,1,15,9,5,11,10,8,2,16,6,4,14,18,12]),
-        'Wildfire - Palmer' : ([4,4,5,4,3,4,4,3,5,4,5,4,3,5,3,4,4,4], [12,8,2,16,18,10,4,14,6,11,5,9,17,1,13,15,3,7]),
-        'Wildfire - Faldo' : ([4,4,3,4,4,4,3,4,5,4,5,4,4,3,5,4,3,4], [7,5,17,1,9,13,15,11,3,8,4,6,16,14,2,12,18,10]),
-        "Whirlwind - Devil's Claw" : ([4,4,5,3,4,5,3,4,4,4,4,3,4,3,5,4,5,4], [11,17,1,13,5,7,9,15,3,16,8,4,14,10,18,12,2,6]),
-        'Whirlwind - Cattail' : ([4,5,3,4,4,3,5,4,4,3,4,5,4,4,3,4,5,4], [9,17,15,1,7,11,3,13,5,8,4,2,10,12,18,14,16,6])}
+        self.courses = {
+            "Grayhawk - Talon" :
+                ([4,4,5,4,3,4,4,3,5,4,3,4,4,5,4,4,3,5], [9,13,5,7,17,1,11,15,3,4,16,2,14,10,8,12,18,6]),
+            'Troon North - Pinnacle' :
+                ([4,4,4,4,5,3,4,3,4,4,5,4,3,5,4,3,4,4], [9,7,3,11,5,17,1,15,13,10,8,12,16,2,14,18,4,6]),
+            'We Ko Pa - Cholla' :
+                ([4,5,3,4,3,4,4,5,4,5,3,4,4,3,4,4,5,4], [13,3,17,9,15,7,11,1,5,4,16,10,12,18,14,6,2,8]),
+            'We Ko Pa - Saguaro' :
+                ([4,4,4,5,3,4,4,5,3,4,3,4,4,5,3,4,4,4], [5,11,9,1,15,7,13,3,17,14,18,6,8,2,16,12,10,4]),
+            "Gold Canyon - Dinosaur" :
+                ([4,3,5,4,3,4,4,3,5,3,5,4,4,3,4,5,3,4], [15,11,1,3,13,9,7,17,5,18,10,4,2,6,14,8,16,12]),
+            'Gold Canyon - Sidewinder' :
+                ([5,3,4,3,4,5,3,4,4,3,5,4,4,3,4,4,4,5], [13,9,5,17,11,3,15,1,7,16,6,10,14,8,4,2,18,12])
+            }
         self.pkl_path = 'pkl_files/'
 
 
@@ -159,7 +168,7 @@ class PlayGolf(object):
         # Specify the service
         s3 = boto3.resource('s3')
         write_name = f_name.replace('_','-')
-        s3.Bucket('king-classic-2018').upload_file(f_name, write_name)
+        s3.Bucket('king-classic-2019').upload_file(f_name, write_name)
 
 
     def add_player(self, name, hdcp, skins=True):
@@ -321,24 +330,24 @@ class PlayGolf(object):
         third = [t for r,t,s in final_results if r == 3]
 
         if len(first) == 1 and len(second) == 1:
-            f_winnings = 80
-            s_winnings = 50
-            t_winnings = 30 / len(third)
+            f_winnings = 50
+            s_winnings = 30
+            t_winnings = 20 / len(third)
             df['Winnings'] = np.where(df['Position'] == 1, f_winnings, df['Winnings'])
             df['Winnings'] = np.where(df['Position'] == 2, s_winnings, df['Winnings'])
             df['Winnings'] = np.where(df['Position'] == 3, t_winnings, df['Winnings'])
         elif len(first) == 2:
-            f_winnings = (80 + 50) / 2
-            s_winnings = 30 / len(second)
+            f_winnings = (50 + 30) / 2
+            s_winnings = 20 / len(second)
             df['Winnings'] = np.where(df['Position'] == 1, f_winnings, df['Winnings'])
             df['Winnings'] = np.where(df['Position'] == 2, s_winnings, df['Winnings'])
         elif len(first) == 1  and len(second) > 1:
-            f_winnings = 80
-            s_winnings = (50 + 30) / len(second)
+            f_winnings = 50
+            s_winnings = (30 + 20) / len(second)
             df['Winnings'] = np.where(df['Position'] == 1, f_winnings, df['Winnings'])
             df['Winnings'] = np.where(df['Position'] == 2, s_winnings, df['Winnings'])
         elif len(first) > 2:
-            f_winnings = (80 + 50 + 30) / len(first)
+            f_winnings = (50 + 30 + 20) / len(first)
             df['Winnings'] = np.where(df['Position'] == 1, f_winnings, df['Winnings'])
 
         df['Winnings'] = df['Winnings'].map('${:,.2f}'.format)
@@ -416,10 +425,10 @@ class PlayGolf(object):
         dct = dict(zip(names, golfers))
 
         golfer = dct[player]
-        if course == 'Wildfire - Faldo':
+        if course == 'We Ko Pa - Cholla':
             check_a = []
             check_b = []
-            for c in ['Talking Stick - Piipaash', "Talking Stick - O'odham"]:
+            for c in ['Grayhawk - Talon', 'Troon North - Pinnacle']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check_a.append((sum(c_par) + golfer.hdcp) - golfer.calc_course_score(c) >= 4)
@@ -434,10 +443,10 @@ class PlayGolf(object):
             else:
                 return golfer.hdcp
 
-        elif course == 'Wildfire - Palmer':
+        elif course == 'We Ko Pa - Saguaro':
             check1_a = []
             check1_b = []
-            for c in ['Talking Stick - Piipaash', "Talking Stick - O'odham"]:
+            for c in ['Grayhawk - Talon', 'Troon North - Pinnacle']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check1_a.append((sum(c_par) + golfer.hdcp) - golfer.calc_course_score(c) >= 4)
@@ -454,7 +463,7 @@ class PlayGolf(object):
 
             check2_a = []
             check2_b = []
-            for c in ["Talking Stick - O'odham", 'Wildfire - Faldo']:
+            for c in ['Troon North - Pinnacle', 'We Ko Pa - Cholla']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check2_a.append((sum(c_par) + hdcp1) - golfer.calc_course_score(c) >= 4)
@@ -469,10 +478,10 @@ class PlayGolf(object):
             else:
                 return hdcp1
 
-        elif course == "Whirlwind - Devil's Claw":
+        elif course == 'Gold Canyon - Dinosaur':
             check1_a = []
             check1_b = []
-            for c in ['Talking Stick - Piipaash', "Talking Stick - O'odham"]:
+            for c in ['Grayhawk - Talon', 'Troon North - Pinnacle']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check1_a.append((sum(c_par) + golfer.hdcp) - golfer.calc_course_score(c) >= 4)
@@ -489,7 +498,7 @@ class PlayGolf(object):
 
             check2_a = []
             check2_b = []
-            for c in ["Talking Stick - O'odham", 'Wildfire - Faldo']:
+            for c in ['Troon North - Pinnacle', 'We Ko Pa - Cholla']:
                 # pdb.set_trace()
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
@@ -507,7 +516,7 @@ class PlayGolf(object):
 
             check3_a = []
             check3_b = []
-            for c in ['Wildfire - Faldo', 'Wildfire - Palmer']:
+            for c in ['We Ko Pa - Cholla', 'We Ko Pa - Saguaro']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check3_a.append((sum(c_par) + hdcp2) - golfer.calc_course_score(c) >= 4)
@@ -522,10 +531,10 @@ class PlayGolf(object):
             else:
                 return hdcp2
 
-        elif course == 'Whirlwind - Cattail':
+        elif course == 'Gold Canyon - Sidewinder':
             check1_a = []
             check1_b = []
-            for c in ['Talking Stick - Piipaash', "Talking Stick - O'odham"]:
+            for c in ['Grayhawk - Talon', 'Troon North - Pinnacle']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check1_a.append((sum(c_par) + golfer.hdcp) - golfer.calc_course_score(c) >= 4)
@@ -542,7 +551,7 @@ class PlayGolf(object):
 
             check2_a = []
             check2_b = []
-            for c in ["Talking Stick - O'odham", 'Wildfire - Faldo']:
+            for c in ['Troon North - Pinnacle', 'We Ko Pa - Cholla']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check2_a.append((sum(c_par) + hdcp1) - golfer.calc_course_score(c) >= 4)
@@ -559,7 +568,7 @@ class PlayGolf(object):
 
             check3_a = []
             check3_b = []
-            for c in ['Wildfire - Faldo', 'Wildfire - Palmer']:
+            for c in ['We Ko Pa - Cholla', 'We Ko Pa - Saguaro']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check3_a.append((sum(c_par) + hdcp2) - golfer.calc_course_score(c) >= 4)
@@ -576,7 +585,7 @@ class PlayGolf(object):
 
             check4_a = []
             check4_b = []
-            for c in ['Wildfire - Palmer', "Whirlwind - Devil's Claw"]:
+            for c in ['We Ko Pa - Saguaro', 'Gold Canyon - Dinosaur']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check4_a.append((sum(c_par) + hdcp3) - golfer.calc_course_score(c) >= 4)
@@ -625,42 +634,34 @@ if __name__ == '__main__':
 
     print("Adding Stuart's scores...")
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Stuart King', "Talking Stick - O'odham", idx+1, np.random.randint(3,7))
+        golf.add_score('Stuart King', 'Grayhawk - Talon', idx+1, np.random.randint(3,7))
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Stuart King', 'Talking Stick - Piipaash', idx+1, np.random.randint(3,7))
-    # for idx, _ in enumerate(range(18)):
-    #     golf.add_score('Stuart King', 'Wildfire - Palmer', idx+1, np.random.randint(3,7))
-    # for idx, _ in enumerate(range(18)):
-    #     golf.add_score('Stuart King', 'Wildfire - Faldo', idx+1, np.random.randint(3,7))
-    # for idx, _ in enumerate(range(18)):
-    #     golf.add_score('Stuart King', "Whirlwind - Devil's Claw", idx+1, np.random.randint(3,7))
-    # for idx, _ in enumerate(range(18)):
-    #     golf.add_score('Stuart King', 'Whirlwind - Cattail', idx+1, np.random.randint(3,7))
+        golf.add_score('Stuart King', 'Troon North - Pinnacle', idx+1, np.random.randint(3,7))
 
     print("Adding Alex's scores...")
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Alex King', "Talking Stick - O'odham", idx+1, np.random.randint(3,6))
+        golf.add_score('Alex King', 'Grayhawk - Talon', idx+1, np.random.randint(3,6))
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Alex King', 'Talking Stick - Piipaash', idx+1, np.random.randint(3,6))
+        golf.add_score('Alex King', 'Troon North - Pinnacle', idx+1, np.random.randint(3,6))
 
     print("Adding Jerry's scores...")
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Jerry King', "Talking Stick - O'odham", idx+1, np.random.randint(3,7))
+        golf.add_score('Jerry King', 'Grayhawk - Talon', idx+1, np.random.randint(3,7))
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Jerry King', 'Talking Stick - Piipaash', idx+1, np.random.randint(3,7))
+        golf.add_score('Jerry King', 'Troon North - Pinnacle', idx+1, np.random.randint(3,7))
 
     print("Adding Reggie's scores...")
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Reggie Sherrill', "Talking Stick - O'odham", idx+1, np.random.randint(3,7))
+        golf.add_score('Reggie Sherrill', 'Grayhawk - Talon', idx+1, np.random.randint(3,7))
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Reggie Sherrill', 'Talking Stick - Piipaash', idx+1, np.random.randint(3,7))
+        golf.add_score('Reggie Sherrill', 'Troon North - Pinnacle', idx+1, np.random.randint(3,7))
 
 
-    # hdcp = golf.calc_handicap('Alex', "Whirlwind - Devil's Claw")
-    # df = golf.show_handicaps("Whirlwind - Devil's Claw")
-    # df = golf.calc_skins('Talking Stick - Piipaash')
-
+    # hdcp = golf.calc_handicap('Alex', 'We Ko Pa - Cholla')
+    # df = golf.show_handicaps('We Ko Pa - Cholla')
+    # df = golf.calc_skins('Grayhawk - Talon')
+    #
     # teams = [('Stuart', 'Jerry'), ('Alex', 'Reggie')]
-    # df = golf.calc_teams(teams, 'Talking Stick - Piipaash')
-
-    # df2 = golf.player_scorecards(['Alex', 'Stuart'],'Talking Stick - Piipaash')
+    # df = golf.calc_teams(teams, 'Grayhawk - Talon')
+    #
+    # df2 = golf.player_scorecards(['Alex', 'Stuart'],'Troon North - Pinnacle')

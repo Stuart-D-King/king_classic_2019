@@ -196,19 +196,13 @@ def teams():
                 request.form['t2p1'],
                 request.form['t3p1'],
                 request.form['t4p1'],
-                request.form['t5p1'],
-                request.form['t6p1'],
-                request.form['t7p1'],
-                request.form['t8p1']]
+                request.form['t5p1']]
 
         p2 = [request.form['t1p2'],
                 request.form['t2p2'],
                 request.form['t3p2'],
                 request.form['t4p2'],
-                request.form['t5p2'],
-                request.form['t6p2'],
-                request.form['t7p2'],
-                request.form['t8p2']]
+                request.form['t5p2']]
 
         p1 = [golfer for golfer in p1 if golfer != 'None']
         p2 = [golfer for golfer in p2 if golfer != 'None']
