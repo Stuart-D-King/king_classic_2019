@@ -118,6 +118,10 @@ def enter_scores():
             if next_hole > 18:
                 on_course = 'None'
                 next_hole = 0
+                p1 = 'None'
+                p2 = 'None'
+                p3 = 'None'
+                p4 = 'None'
 
             return render_template('enter_scores.html', players=players, holes=holes, scores=scores, msg=msg, scorecard_df=scorecard_df.to_html(), course=course, on_course=on_course, next_hole=next_hole, p1=p1, p2=p2, p3=p3, p4=p4)
         except:
