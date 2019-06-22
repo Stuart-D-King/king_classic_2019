@@ -98,7 +98,7 @@ def enter_scores():
             golfers = [golfer for golfer in golfers if golfer != 'None']
 
             g_scores = [request.form['score1'], request.form['score2'], request.form['score3'], request.form['score4']]
-            g_scores = [int(score) for score in g_scores if score !=
+            g_scores = [int(score) for score in g_scores if score != 'None']
 
             if course == 'None' or hole == 0 or not g_scores or not golfers or len(golfers) != len(g_scores):
                 msg = 'An error occured. Please ensure a course, hole, and at least one golfer and score are selected.'
