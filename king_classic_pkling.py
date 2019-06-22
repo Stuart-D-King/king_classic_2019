@@ -356,7 +356,6 @@ class PlayGolf(object):
 
 
     def player_scorecards(self, players, course, net=False, skins=False):
-        pdb.set_trace()
         course_par, course_hdcps = self.courses[course]
         front_par = sum(course_par[:9])
         back_par = sum(course_par[9:])

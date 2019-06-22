@@ -88,10 +88,6 @@ def enter_scores():
             hole = int(request.form['hole'])
             next_hole = hole + 1
 
-            print(course)
-            print(on_course)
-            print(hole)
-            print(next_hole)
             p1 = request.form['player1']
             p2 = request.form['player2']
             p3 = request.form['player3']
@@ -100,11 +96,9 @@ def enter_scores():
             golfers = [p1, p2, p3, p4]
             # golfers = [request.form['player1'], request.form['player2'], request.form['player3'], request.form['player4']]
             golfers = [golfer for golfer in golfers if golfer != 'None']
-            print(golfers)
 
             g_scores = [request.form['score1'], request.form['score2'], request.form['score3'], request.form['score4']]
-            g_scores = [int(score) for score in g_scores if score != "None"]
-            print(g_scores)
+            g_scores = [int(score) for score in g_scores if score !=
 
             if course == 'None' or hole == 0 or not g_scores or not golfers or len(golfers) != len(g_scores):
                 msg = 'An error occured. Please ensure a course, hole, and at least one golfer and score are selected.'
@@ -120,11 +114,11 @@ def enter_scores():
 
             scorecard_df = golf.player_scorecards(golfers, course)
             msg = 'Scores entered successfully!'
-            print(next_hole)
+
             if next_hole > 18:
                 on_course = 'None'
                 next_hole = 0
-            print(next_hole)
+
             return render_template('enter_scores.html', players=players, holes=holes, scores=scores, msg=msg, scorecard_df=scorecard_df.to_html(), course=course, on_course=on_course, next_hole=next_hole, p1=p1, p2=p2, p3=p3, p4=p4)
         except:
             course = request.form['course']
