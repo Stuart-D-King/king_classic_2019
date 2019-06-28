@@ -125,8 +125,8 @@ class PlayGolf(object):
         self.db = self.client['kc_{}'.format(year)] # Access/Initiate Database
         self.coll = self.db['scores'] # Access/Initiate Table
         self.courses = {
-            "Grayhawk - Talon" :
-                ([4,4,5,4,3,4,4,3,5,4,3,4,4,5,4,4,3,5], [9,13,5,7,17,1,11,15,3,4,16,2,14,10,8,12,18,6]),
+            "Grayhawk - Raptor" :
+                ([4,4,4,5,3,4,5,3,4,4,5,4,3,4,4,3,4,5], [10,16,4,2,14,12,8,18,6,9,1,5,7,13,11,17,15,3]),
             'Troon North - Pinnacle' :
                 ([4,4,4,4,5,3,4,3,4,4,5,4,3,5,4,3,4,4], [9,7,3,11,5,17,1,15,13,10,8,12,16,2,14,18,4,6]),
             'We Ko Pa - Cholla' :
@@ -349,7 +349,7 @@ class PlayGolf(object):
         if course == 'We Ko Pa - Cholla':
             check_a = []
             check_b = []
-            for c in ['Grayhawk - Talon', 'Troon North - Pinnacle']:
+            for c in ['Grayhawk - Raptor', 'Troon North - Pinnacle']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check_a.append((sum(c_par) + golfer.hdcp) - golfer.calc_course_score(c) >= 4)
@@ -366,7 +366,7 @@ class PlayGolf(object):
         elif course == 'We Ko Pa - Saguaro':
             check1_a = []
             check1_b = []
-            for c in ['Grayhawk - Talon', 'Troon North - Pinnacle']:
+            for c in ['Grayhawk - Raptor', 'Troon North - Pinnacle']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check1_a.append((sum(c_par) + golfer.hdcp) - golfer.calc_course_score(c) >= 4)
@@ -401,7 +401,7 @@ class PlayGolf(object):
         elif course == 'Gold Canyon - Dinosaur':
             check1_a = []
             check1_b = []
-            for c in ['Grayhawk - Talon', 'Troon North - Pinnacle']:
+            for c in ['Grayhawk - Raptor', 'Troon North - Pinnacle']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check1_a.append((sum(c_par) + golfer.hdcp) - golfer.calc_course_score(c) >= 4)
@@ -454,7 +454,7 @@ class PlayGolf(object):
         elif course == 'Gold Canyon - Sidewinder':
             check1_a = []
             check1_b = []
-            for c in ['Grayhawk - Talon', 'Troon North - Pinnacle']:
+            for c in ['Grayhawk - Raptor', 'Troon North - Pinnacle']:
                 if all(golfer.show_scorecard(c).values()):
                     c_par, _ = self.courses[c]
                     check1_a.append((sum(c_par) + golfer.hdcp) - golfer.calc_course_score(c) >= 4)
@@ -553,7 +553,7 @@ if __name__ == '__main__':
 
     print("Adding Stuart's scores...")
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Stuart', 'Grayhawk - Talon', idx+1, np.random.randint(3,7))
+        golf.add_score('Stuart', 'Grayhawk - Raptor', idx+1, np.random.randint(3,7))
     for idx, _ in enumerate(range(18)):
         golf.add_score('Stuart', 'Troon North - Pinnacle', idx+1, np.random.randint(3,7))
     # for idx, _ in enumerate(range(18)):
@@ -567,25 +567,25 @@ if __name__ == '__main__':
 
     print("Adding Alex's scores...")
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Alex', 'Grayhawk - Talon', idx+1, np.random.randint(3,6))
+        golf.add_score('Alex', 'Grayhawk - Raptor', idx+1, np.random.randint(3,6))
     for idx, _ in enumerate(range(18)):
         golf.add_score('Alex', 'Troon North - Pinnacle', idx+1, np.random.randint(3,6))
 
     print("Adding Jerry's scores...")
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Jerry', 'Grayhawk - Talon', idx+1, np.random.randint(3,7))
+        golf.add_score('Jerry', 'Grayhawk - Raptor', idx+1, np.random.randint(3,7))
     for idx, _ in enumerate(range(18)):
         golf.add_score('Jerry', 'Troon North - Pinnacle', idx+1, np.random.randint(3,7))
 
     print("Adding Reggie's scores...")
     for idx, _ in enumerate(range(18)):
-        golf.add_score('Reggie', 'Grayhawk - Talon', idx+1, np.random.randint(3,7))
+        golf.add_score('Reggie', 'Grayhawk - Raptor', idx+1, np.random.randint(3,7))
     for idx, _ in enumerate(range(18)):
         golf.add_score('Reggie', 'Troon North - Pinnacle', idx+1, np.random.randint(3,7))
 
     # hdcp = golf.calc_handicap('Alex', 'We Ko Pa - Cholla')
     # df = golf.show_handicaps('We Ko Pa - Cholla')
-    # df = golf.calc_skins('Grayhawk - Talon')
+    # df = golf.calc_skins('Grayhawk - Raptor')
 
     # teams = [('Stuart', 'Jerry'), ('Alex', 'Reggie'), ('Pete', 'Ben')]
     # df = golf.calc_teams(teams, 'Troon North - Pinnacle')
