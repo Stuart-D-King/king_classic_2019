@@ -274,26 +274,21 @@ class PlayGolf(object):
                 # skins.append((hole, df[str(hole)].idxmin()))
                 skins_dct[df[str(hole)].idxmin()].append(str(hole))
 
-        print(skins_dct)
         results = []
         for name in names:
             results.append((name, skins_dct[name], len(skins_dct[name])))
             # results.append((name, skins.count(name)))
 
-        print(results)
         results = [(name, ', '.join(holes), n_skins) for name, holes, n_skins in results]
         sorted_results = sorted(results, key=lambda x: x[2], reverse=True)
 
-        print(sorted_results)
         total_skins = sum(n for _, _, n in sorted_results)
         skin_value = pot / total_skins
-        print(total_skins)
-        print(skin_value)
+
         final_results = [(name, holes, skins * skin_value) for name, holes, skins in sorted_results]
 
-        df_results = [(name, holes, int(winnings/skin_value), float(winnings)) for name, holes, winnings in final_results]
+        df_results = [(name, holes, round(winnings/skin_value), float(winnings)) for name, holes, winnings in final_results]
 
-        print(df_results)
         df_skins = pd.DataFrame(df_results, columns=['Player', 'Holes Won', 'Skins', 'Winnings'])
         df_skins['Winnings'] = df_skins['Winnings'].map('${:,.2f}'.format)
 
