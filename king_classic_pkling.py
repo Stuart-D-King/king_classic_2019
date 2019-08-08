@@ -274,6 +274,7 @@ class PlayGolf(object):
                 # skins.append((hole, df[str(hole)].idxmin()))
                 skins_dct[df[str(hole)].idxmin()].append(str(hole))
 
+        print(skins_dct)
         results = []
         for name in names:
             results.append((name, skins_dct[name], len(skins_dct[name])))
