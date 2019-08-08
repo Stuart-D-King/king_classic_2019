@@ -293,6 +293,7 @@ class PlayGolf(object):
 
         df_results = [(name, holes, int(winnings/skin_value), float(winnings)) for name, holes, winnings in final_results]
 
+        print(df_results)
         df_skins = pd.DataFrame(df_results, columns=['Player', 'Holes Won', 'Skins', 'Winnings'])
         df_skins['Winnings'] = df_skins['Winnings'].map('${:,.2f}'.format)
 
