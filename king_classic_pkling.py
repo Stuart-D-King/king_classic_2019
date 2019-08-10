@@ -318,7 +318,6 @@ class PlayGolf(object):
         rank = list(rankdata(team_scores, method='min'))
         results = list(zip(rank, team_nums, team_scores))
         sorted_results = sorted(results, key=lambda x: x[0])
-        print(sorted_results)
 
         clean_teams = [p1 + ' / ' + p2 for p1, p2 in teams]
         final_results = [(r, clean_teams[i-1], s) for r,i,s in sorted_results]
@@ -341,7 +340,7 @@ class PlayGolf(object):
             f_winnings = (50 + 30) / 2
             s_winnings = 20 / len(third)
             df['Winnings'] = np.where(df['Position'] == 1, f_winnings, df['Winnings'])
-            df['Winnings'] = np.where(df['Position'] == 2, s_winnings, df['Winnings'])
+            df['Winnings'] = np.where(df['Position'] == 3, s_winnings, df['Winnings'])
         elif len(first) == 1  and len(second) > 1:
             f_winnings = 50
             s_winnings = (30 + 20) / len(second)
