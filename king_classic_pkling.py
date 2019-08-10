@@ -339,7 +339,7 @@ class PlayGolf(object):
             df['Winnings'] = np.where(df['Position'] == 3, t_winnings, df['Winnings'])
         elif len(first) == 2:
             f_winnings = (50 + 30) / 2
-            s_winnings = 20 / len(second)
+            s_winnings = 20 / len(third)
             df['Winnings'] = np.where(df['Position'] == 1, f_winnings, df['Winnings'])
             df['Winnings'] = np.where(df['Position'] == 2, s_winnings, df['Winnings'])
         elif len(first) == 1  and len(second) > 1:
