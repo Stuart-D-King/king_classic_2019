@@ -318,6 +318,7 @@ class PlayGolf(object):
         rank = list(rankdata(team_scores, method='min'))
         results = list(zip(rank, team_nums, team_scores))
         sorted_results = sorted(results, key=lambda x: x[0])
+        print(sorted_results)
 
         clean_teams = [p1 + ' / ' + p2 for p1, p2 in teams]
         final_results = [(r, clean_teams[i-1], s) for r,i,s in sorted_results]
